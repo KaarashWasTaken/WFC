@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: e4fb0056549be964dbb65d67632c9694
+guid: c0b97dca61afef5439b25e962eea3e5e
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -44,12 +44,12 @@ TextureImporter:
   compressionQuality: 50
   spriteMode: 2
   spriteExtrude: 1
-  spriteMeshType: 1
+  spriteMeshType: 0
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 14
+  spritePixelsToUnits: 16
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
-  spriteGenerateFallbackPhysicsShape: 1
+  spriteGenerateFallbackPhysicsShape: 0
   alphaUsage: 1
   alphaIsTransparency: 1
   spriteTessellationDetail: -1
@@ -69,9 +69,9 @@ TextureImporter:
     buildTarget: DefaultTexturePlatform
     maxTextureSize: 2048
     resizeAlgorithm: 0
-    textureFormat: -1
-    textureCompression: 1
-    compressionQuality: 50
+    textureFormat: 4
+    textureCompression: 0
+    compressionQuality: 0
     crunchedCompression: 0
     allowsAlphaSplitting: 0
     overridden: 0
@@ -105,127 +105,127 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: 4_Seasons_Ground_Tiles_0
+      name: DYI_Tiles_0
       rect:
         serializedVersion: 2
-        x: 81
-        y: 177
-        width: 14
-        height: 14
+        x: 0
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: c8c93ef008da226489e4f64b3f545925
-      internalID: -946177257
+      spriteID: dfda6ea8737597c41a35d794bcd009cd
+      internalID: -2109863552
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 4_Seasons_Ground_Tiles_2
+      name: DYI_Tiles_1
       rect:
         serializedVersion: 2
-        x: 112
-        y: 177
-        width: 14
-        height: 14
+        x: 16
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e17a561ff36ca1a45a6b9c5f8d94d297
-      internalID: 358983576
+      spriteID: 9634c5ac68374ee4d8a65c8784085dae
+      internalID: -1257221702
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 4_Seasons_Ground_Tiles_4
+      name: DYI_Tiles_2
       rect:
         serializedVersion: 2
-        x: 80
-        y: 161
-        width: 14
-        height: 14
+        x: 32
+        y: 16
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: d104374a5fc5130418652a9d70880a2e
-      internalID: -1364756226
+      spriteID: 8c3f0853b090b8e4092486de1bad8fa4
+      internalID: 135696346
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 4_Seasons_Ground_Tiles_5
+      name: DYI_Tiles_3
       rect:
         serializedVersion: 2
-        x: 50
-        y: 176
-        width: 14
-        height: 14
+        x: 32
+        y: 0
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: bd6ce5bf2b20d4a4fa73fa0268530b57
-      internalID: 786753704
+      spriteID: 3f632b9d98ba3c5498b5d53acbaa8383
+      internalID: 112180543
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 4_Seasons_Ground_Tiles_6
+      name: DYI_Tiles_4
       rect:
         serializedVersion: 2
-        x: 33
-        y: 145
-        width: 14
-        height: 14
+        x: 16
+        y: 0
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 9970e2a913312a1449611f0c551ac7e7
-      internalID: 1347453157
+      spriteID: ad594abd2f6568b468a74a913bdbf51f
+      internalID: 783572765
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: 4_Seasons_Ground_Tiles_7
+      name: DYI_Tiles_5
       rect:
         serializedVersion: 2
-        x: 33
-        y: 159
-        width: 14
-        height: 14
+        x: 0
+        y: 0
+        width: 16
+        height: 16
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       outline: []
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 8566f9ed8c700f64da276c660ebd22d9
-      internalID: 920180953
+      spriteID: 2537a212cb5e17947a156254305ae840
+      internalID: 1302498150
       vertices: []
       indices: 
       edges: []
@@ -241,14 +241,12 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      4_Seasons_Ground_Tiles_0: -946177257
-      4_Seasons_Ground_Tiles_1: -1393616267
-      4_Seasons_Ground_Tiles_2: 358983576
-      4_Seasons_Ground_Tiles_3: 1818086933
-      4_Seasons_Ground_Tiles_4: -1364756226
-      4_Seasons_Ground_Tiles_5: 786753704
-      4_Seasons_Ground_Tiles_6: 1347453157
-      4_Seasons_Ground_Tiles_7: 920180953
+      DYI_Tiles_0: -2109863552
+      DYI_Tiles_1: -1257221702
+      DYI_Tiles_2: 135696346
+      DYI_Tiles_3: 112180543
+      DYI_Tiles_4: 783572765
+      DYI_Tiles_5: 1302498150
   spritePackingTag: 
   pSDRemoveMatte: 0
   pSDShowRemoveMatteOption: 0
