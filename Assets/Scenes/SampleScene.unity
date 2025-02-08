@@ -271,9 +271,9 @@ RectTransform:
   m_Father: {fileID: 1850669036}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -559.4999, y: 250}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 175, y: -120}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &450910528
@@ -819,27 +819,27 @@ PrefabInstance:
     - target: {fileID: 3788423333211156074, guid: 6a7515dc6ed61874dafd13bc729c4052, type: 3}
       propertyPath: TilesPrefabs.Array.data[0]
       value: 
-      objectReference: {fileID: 6752056966320650293, guid: e843464bd19dd4d4db1b6e66aefdc66f, type: 3}
+      objectReference: {fileID: 171187305404715820, guid: 207e6f79ef300594eb94620309567167, type: 3}
     - target: {fileID: 3788423333211156074, guid: 6a7515dc6ed61874dafd13bc729c4052, type: 3}
       propertyPath: TilesPrefabs.Array.data[1]
       value: 
-      objectReference: {fileID: 6752056966320650293, guid: 1fe7e11e3ab87354cb10ae7b70535057, type: 3}
+      objectReference: {fileID: 171187305404715820, guid: 207e6f79ef300594eb94620309567167, type: 3}
     - target: {fileID: 3788423333211156074, guid: 6a7515dc6ed61874dafd13bc729c4052, type: 3}
       propertyPath: TilesPrefabs.Array.data[2]
       value: 
-      objectReference: {fileID: 6752056966320650293, guid: 125dc61e5bc784e468f92d880afbc003, type: 3}
+      objectReference: {fileID: 171187305404715820, guid: 207e6f79ef300594eb94620309567167, type: 3}
     - target: {fileID: 3788423333211156074, guid: 6a7515dc6ed61874dafd13bc729c4052, type: 3}
       propertyPath: TilesPrefabs.Array.data[3]
       value: 
-      objectReference: {fileID: 6752056966320650293, guid: f4f27bf713e877141ab879ff988bcaf6, type: 3}
+      objectReference: {fileID: 171187305404715820, guid: 207e6f79ef300594eb94620309567167, type: 3}
     - target: {fileID: 3788423333211156074, guid: 6a7515dc6ed61874dafd13bc729c4052, type: 3}
       propertyPath: TilesPrefabs.Array.data[4]
       value: 
-      objectReference: {fileID: 6752056966320650293, guid: 3cc3c2b2f9d177345bc1da9b2209da4c, type: 3}
+      objectReference: {fileID: 171187305404715820, guid: 207e6f79ef300594eb94620309567167, type: 3}
     - target: {fileID: 3788423333211156074, guid: 6a7515dc6ed61874dafd13bc729c4052, type: 3}
       propertyPath: TilesPrefabs.Array.data[5]
       value: 
-      objectReference: {fileID: 6752056966320650293, guid: 02738dccbd83cdf4f93d5444f43ce772, type: 3}
+      objectReference: {fileID: 171187305404715820, guid: 207e6f79ef300594eb94620309567167, type: 3}
     - target: {fileID: 8479991741719993680, guid: 6a7515dc6ed61874dafd13bc729c4052, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -1588,7 +1588,7 @@ GameObject:
   - component: {fileID: 2051508128}
   - component: {fileID: 2051508127}
   m_Layer: 5
-  m_Name: Text (TMP)
+  m_Name: MapSize
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1609,9 +1609,9 @@ RectTransform:
   m_Father: {fileID: 1850669036}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.5, y: 0.5}
-  m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -559.4999, y: 243.99997}
+  m_AnchorMin: {x: 0, y: 1}
+  m_AnchorMax: {x: 0, y: 1}
+  m_AnchoredPosition: {x: 175, y: -120}
   m_SizeDelta: {x: 160, y: 30}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2051508127
