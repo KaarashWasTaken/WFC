@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Animations;
 
 public enum TileType
 {
@@ -14,15 +15,24 @@ public class WFCTile : MonoBehaviour
     public TileType tileType;
     public List<SpriteRenderer> spriteRenderers;
     public List<SpriteRenderer> allowedSprites;
+	public TileManager manager;
     SpriteRenderer activeSprite;
     // Start is called before the first frame update
-    void Start()
+    void Awake()
     {
+		  SelectSprite();
+    }
+	public void SetManager(TileManager newManager)
+	{
+		manager = newManager;
+	}
+	void SelectSprite()
+	{
         foreach (SpriteRenderer sprite in spriteRenderers)
         {
             allowedSprites.Add(sprite);
         }
-        int random = UnityEngine.Random.Range(0, 5);
+        int random = UnityEngine.Random.Range(0, 6);
         for (int i = 0; i < spriteRenderers.Count; i++)
         {
             if (i == random)
@@ -54,8 +64,7 @@ public class WFCTile : MonoBehaviour
                 allowedSprites.Remove(sprite);
             }
         }
-        
-    }
+	}
 
     // Update is called once per frame
     void Update()

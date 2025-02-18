@@ -23,7 +23,7 @@ public class GenerateButton : MonoBehaviour
 	public void ButtonPress()
 	{
 		tileManagerScript.MapSize = MapSize;
-		tileManagerScript.GenerateMap();
+		tileManagerScript.RegenerateMap();
 	}
 
 	public void UpdateSize(string newVal)
