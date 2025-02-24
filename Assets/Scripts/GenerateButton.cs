@@ -5,13 +5,12 @@ using UnityEngine;
 
 public class GenerateButton : MonoBehaviour
 {
-	public int MapSize;
-	TileManager tileManagerScript;
-	public GameObject TileManager;
+	public int mapSize;
+	public TileManager manager;
     // Start is called before the first frame update
     void Start()
     {
-		tileManagerScript = TileManager.GetComponent<TileManager>();
+
     }
 
     // Update is called once per frame
@@ -22,8 +21,8 @@ public class GenerateButton : MonoBehaviour
 
 	public void ButtonPress()
 	{
-		tileManagerScript.MapSize = MapSize;
-		tileManagerScript.RegenerateMap();
+		manager.mapSize = mapSize;
+		manager.RegenerateMap();
 	}
 
 	public void UpdateSize(string newVal)
@@ -32,7 +31,7 @@ public class GenerateButton : MonoBehaviour
 		{
 			if (val >= 2)
 			{
-				MapSize = val;
+				mapSize = val;
 			}
 		}
 	}
