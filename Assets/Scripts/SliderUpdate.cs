@@ -9,12 +9,18 @@ using UnityEngine.UI;
 
 public class SliderUpdate : MonoBehaviour
 {
+	//GENERATE BUTTON
 	public GenerateButton genButton;
+	//MAP DIMENTION INPUT FIELD
 	public TMP_InputField inputField;
+	//TEXT FOR STEP BY STEP DELAY TIME
 	public TextMeshProUGUI sbsText;
+	//TILEMANAGER EXISTING IN SCENE
 	public TileManager manager;
+	//TRUE IF THE SLIDER DECIDES MAP DIMENSION
 	public bool genSlider;
-    // Start is called before the first frame update
+
+    // START IS CALLED BEFORE THE FIRST FRAME UPDATE
     void Start()
     {
 		if (genSlider)
@@ -24,7 +30,7 @@ public class SliderUpdate : MonoBehaviour
 		}
     }
 
-    // Update is called once per frame
+    // UPDATE IS CALLED ONCE PER FRAME
     void Update()
     {
 		if (genSlider)
@@ -35,22 +41,9 @@ public class SliderUpdate : MonoBehaviour
 				inputField.SetTextWithoutNotify(genButton.mapSize.ToString());
 			}
 		}
-		// else if (!genSlider)
-		// {
-		// 	if (manager.sbsStepTime < 0.01)
-		// 	{
-		// 		manager.sbsStepTime = 0.01f;
-		// 		inputField.SetTextWithoutNotify(manager.sbsStepTime.ToString("F2"));
-		// 	}
-		// 	else if (manager.sbsStepTime > 1.0f)
-		// 	{
-		// 		manager.sbsStepTime = 1.0f;
-		// 		inputField.SetTextWithoutNotify(manager.sbsStepTime.ToString("F2"));
-		// 	}
-		// }
 	}
 
-	//
+	//UPDATE VALUE FROM SLIDER
 	public void UpdateValue()
 	{
 		int val = GetComponentInChildren<Slider>().value.ConvertTo<int>();
@@ -58,11 +51,11 @@ public class SliderUpdate : MonoBehaviour
 		inputField.SetTextWithoutNotify(val.ToString());
 	}
 	
-	//
+	//GET VALUE FROM INPUT FIELD
 	public void GetTypedValue()
 	{
 		string valString = inputField.text;
-		if (int.TryParse(valString, out int newNum))
+		if (int.TryParse(valString, out int newNum) && newNum > 0 && newNum <= 100)
 		{
 			genButton.mapSize = newNum;
 			inputField.SetTextWithoutNotify(newNum.ToString());
@@ -72,25 +65,10 @@ public class SliderUpdate : MonoBehaviour
 			inputField.SetTextWithoutNotify(genButton.mapSize.ToString());
 	}
 
-	//
+	//UPDATE STEP BY STEP DELAY TIME BASED ON SLIDER
 	public void UpdateSBSDelay()
 	{
 		manager.sbsStepTime = GetComponentInChildren<Slider>().value;
 		sbsText.SetText(manager.sbsStepTime.ToString("F2"));
-		// inputField.SetTextWithoutNotify(manager.sbsStepTime.ToString("F2"));
 	}
-
-	//
-	// public void GetTypedSBSDelayValue()
-	// {
-	// 	string valString = inputField.text;
-	// 	if (int.TryParse(valString, out int newNum))
-	// 	{
-	// 		manager.sbsStepTime = newNum;
-	// 		inputField.SetTextWithoutNotify(newNum.ToString());
-	// 		GetComponent<Slider>().SetValueWithoutNotify(newNum);
-	// 	}
-	// 	else 
-	// 		inputField.SetTextWithoutNotify(manager.sbsStepTime.ToString("F2"));
-	// }
 }

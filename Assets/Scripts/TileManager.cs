@@ -10,13 +10,13 @@ public class TileManager : MonoBehaviour
 	//LIST OF TILE POSITIONS
 	// public List<Vector2> tilePosMap = new();
 	//MAP OF TILES AND THEIR LOCATIONS
-	public Dictionary<Vector2, WFCTile> tileMap = new();
+	public Dictionary<Vector2, WFC2Tile> tileMap = new();
 	//TILES PLACED IN THE WORLD
-	public List<WFCTile> placedTiles = new();
+	public List<WFC2Tile> placedTiles = new();
 	//THE GAMEOBJECT THAT SHOULD PARENT THE TILES
 	public GameObject tilesParent;
 	//THE PREFAB FOR TILES
-	public WFCTile tileObj;
+	public WFC2Tile tileObj;
 	//SEED UI TOGGLE
 	public Toggle seedToggle;
 	//STEP BY STEP UI TOGGLE
@@ -37,7 +37,7 @@ public class TileManager : MonoBehaviour
 	/*--------STEP BY STEP VARIABLES--------*/
 	/*USED IN A FOR LOOP FOR THE STEP BY STEP TO DIRECT	
 	HOW MANY TILES SHOULD BE PLACED PER LOOP*/
-	int tilesPerFrame = 1;
+	int tilesPerFrame = 4;
 	//USED DURING STEP BY STEP FOR KNOWING WHICH TILE IT'S AT
 	int tilePosIndex = 0;
 	//BOOL TO CHECK IF THE STEP BY STEP SHOULD CONTINUE
@@ -52,7 +52,6 @@ public class TileManager : MonoBehaviour
 	public float sbsStepTime = 0.5f;
 	/*--------------------------------------*/
 
-
     // START IS CALLED BEFORE THE FIRST FRAME UPDATE
     void Start()
     {
@@ -65,7 +64,9 @@ public class TileManager : MonoBehaviour
     void Update() 
 	{
 		timerElapsed = Time.time - timerStart;
-		if (!fullySpawned && stepByStep && timerElapsed >= sbsStepTime)
+		/*RUN STEP GENERATION IF STEP BY STEP IS ACTIVATED, NOT ALL TILES ARE SPAWNED, 
+		THE TIME BETWEEN EACH STEP IS MORE THAN THE DELAY TIME AND MANUAL STEPPING IS NOT ACTIVATED*/
+		if (!fullySpawned && stepByStep && timerElapsed >= sbsStepTime && !sbsToggle.gameObject.GetComponent<ManualStepToggle>().GetManualMode())
 		{
 			for (int i = 0; i < tilesPerFrame; i++)
 			{
@@ -78,7 +79,7 @@ public class TileManager : MonoBehaviour
 	//GENERATE A MAP WITHOUT STEP BY STEP
 	public void GenerateMap()
 	{
-		foreach (WFCTile tile in placedTiles)
+		foreach (WFC2Tile tile in placedTiles)
 		{
 			if (tile.GetTileLoc().x < mapSize && tile.GetTileLoc().y < mapSize)
 				tile.SelectSprite();
@@ -93,7 +94,7 @@ public class TileManager : MonoBehaviour
 		{
 			if (!tileMap.ContainsKey(new(i % mapSize, i / mapSize)))
 			{
-				WFCTile tile = Instantiate(tileObj, new Vector3(i % mapSize, i / mapSize, 0), Quaternion.identity);
+				WFC2Tile tile = Instantiate(tileObj, new Vector3(i % mapSize, i / mapSize, 0), Quaternion.identity);
 				tileMap.Add(new(i % mapSize, i / mapSize), tile);
 				tile.SetTileLoc(new(i % mapSize, i / mapSize));
 				tile.transform.SetParent(tilesParent.transform);
@@ -102,7 +103,7 @@ public class TileManager : MonoBehaviour
 			}
 		}
 	}
-	public WFCTile GetTileFromLoc(Vector2 loc)
+	public WFC2Tile GetTileFromLoc(Vector2 loc)
 	{
 		if (tileMap.ContainsKey(loc))
 			return tileMap[loc];
@@ -117,7 +118,7 @@ public class TileManager : MonoBehaviour
 			largestMapSize = mapSize;
 			SpawnTiles();
 		}
-		foreach (WFCTile tile in placedTiles)
+		foreach (WFC2Tile tile in placedTiles)
 		{
 			tile.ResetSprite();
 		}
@@ -143,6 +144,8 @@ public class TileManager : MonoBehaviour
 	//GENERATE A MAP WITH STEP BY STEP
 	public void StepGenerateMap()
 	{
+		if (fullySpawned)
+			return;
 		placedTiles[tilePosIndex].SelectSprite();
 
 		//Spawn next tile
