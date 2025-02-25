@@ -19,7 +19,7 @@ public class CameraController : MonoBehaviour
     {
         motion = new Vector3(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), 0);
 		transform.Translate(motion * speed * Time.deltaTime);
-        float nextSize = cam.orthographicSize -= Input.GetAxisRaw("Mouse ScrollWheel") * zoomSpeed * Time.deltaTime;
+        float nextSize = cam.orthographicSize - Input.GetAxisRaw("Mouse ScrollWheel") * zoomSpeed * Time.deltaTime;
         if (nextSize >= 1 && nextSize < 150)
             cam.orthographicSize = nextSize;
     }
