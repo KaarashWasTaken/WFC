@@ -104,7 +104,7 @@ public class TileManager : MonoBehaviour
 		uncollapsedTiles.Clear();
 		for (int i = 0; i < mapSize; i++)
 		{
-			for (int j = 0; j < mapSize; i++)
+			for (int j = 0; j < mapSize; j++)
 			{
 				uncollapsedTiles.Add(tileMap[new(j, i)]);
 			}
@@ -124,49 +124,70 @@ public class TileManager : MonoBehaviour
 	//GENERATE A MAP WITHOUT STEP BY STEP
 	public void GenerateMap()
 	{
-		List<WFCTile> tempTileList = new List<WFCTile>(uncollapsedTiles);
+		//FIRST TILE WILL START FROM THE CENTER OF THE MAP
+		placedTiles[mapSize*mapSize/2].CollapseTile();
+		uncollapsedTiles.Remove(placedTiles[mapSize*mapSize/2]);
+		WFCTile tileToCollapse;
 		while (uncollapsedTiles.Count > 0)
 		{
-			
+			tileToCollapse = FindLowestEntropyTile();
+			tileToCollapse.CollapseTile();
+			foreach (var neighbour in tileToCollapse.adjacentTiles)
+			{
+				if (neighbour != null && !neighbour.collapsed)
+				{
+					neighbour.FindPossibleTypes();
+				}
+			}
+			uncollapsedTiles.Remove(tileToCollapse);
 		}
-		// foreach (WFCTile tile in uncollapsedTiles)
-		// {
-		// 	if (tile.GetTileLoc().x < mapSize && tile.GetTileLoc().y < mapSize)
-		// 		tile.CollapseTile();
-		// }
 		fullySpawned = true;
 	}
 
-	//FIND THE TILE WITH THE LOWEST POSSIBLE AMOUNT OF TILETYPES
-	WFCTile FindLowestEntropyTile()
-	{
-		WFCTile lowestEntropyTile = uncollapsedTiles[0];
-		foreach (WFCTile tile in uncollapsedTiles)
-		{
-			int entropy = tile.possibleTileTypes.Count;
-			lowestEntropyTile = entropy < lowestEntropyTile.possibleTileTypes.Count && entropy > 1 ? tile : lowestEntropyTile;
-		}
-		return lowestEntropyTile;
-	}
 
 	//GENERATE A MAP WITH STEP BY STEP
 	public void StepGenerateMap()
 	{
 		if (fullySpawned)
 			return;
-		placedTiles[tilePosIndex].CollapseTile();
+		WFCTile tileToCollapse;
+		//FIRST TILE WILL START FROM THE CENTER OF THE MAP
+		if (uncollapsedTiles.Count == mapSize * mapSize)
+			tileToCollapse = tileMap[new(mapSize/2, mapSize/2)];
+		else
+			tileToCollapse = FindLowestEntropyTile();
+		tileToCollapse.CollapseTile();
+		foreach (var neighbour in tileToCollapse.adjacentTiles)
+		{
+			if (neighbour != null && !neighbour.collapsed)
+			{
+				neighbour.FindPossibleTypes();
+			}
+		}
+		uncollapsedTiles.Remove(tileToCollapse);
 
-		//Spawn next tile
-		// WFCTile tile = Instantiate(tileObj, new Vector3 (TilePosMap[tilePosIndex-1].x, TilePosMap[tilePosIndex-1].y, 0), Quaternion.identity);
-		// tile.transform.SetParent(TilesParent.transform);
-		// tile.SetManager(this);
-		// PlacedTiles.Add(tile);
-
-		tilePosIndex ++;
-		if (tilePosIndex == mapSize * mapSize)
+		if (uncollapsedTiles.Count <= 0)
 		{
 			fullySpawned = true;
 		}
+	}
+
+	//FIND THE TILE WITH THE LOWEST POSSIBLE AMOUNT OF TILETYPES
+	WFCTile FindLowestEntropyTile()
+	{
+		int lowestEntropy = int.MaxValue;
+		WFCTile lowestEntropyTile = uncollapsedTiles[0];
+		int entropy;
+		foreach (WFCTile tile in uncollapsedTiles)
+		{
+			entropy = tile.possibleTypesWithRot.Count;
+			if (entropy < lowestEntropy && entropy > 1)
+			{
+				lowestEntropyTile = tile;
+				lowestEntropy = entropy;
+			}
+		}
+		return lowestEntropyTile;
 	}
 
 	//SPAWN NEW TILES
