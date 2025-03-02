@@ -7,7 +7,6 @@ using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.Animations;
 
-
 public enum TileType
 {
 	Corner,
@@ -53,6 +52,7 @@ public class WFCTile : MonoBehaviour
 	//THIS TILE'S ROTATION
     public Vector2 tileLoc;
 
+	//ASSIGNING BITS TO CORRESPOND TILE TYPE
 	Dictionary<TileType, int> typeToBitMap = new Dictionary<TileType, int>
 	{
 		{TileType.Corner, 0b1110},
@@ -93,7 +93,7 @@ public class WFCTile : MonoBehaviour
     public void CollapseTile()
     {
 		FindPossibleTypes();
-		int randomTile = UnityEngine.Random.Range(0, possibleTypesWithRot.Count);
+		int randomTile = ChooseRandomTile();
         tileType = possibleTypesWithRot[randomTile].type;
 		rotation = 90 * possibleTypesWithRot[randomTile].rot;
 		tilebyte = ShiftBitsRight(typeToBitMap[tileType], possibleTypesWithRot[randomTile].rot );
@@ -101,14 +101,41 @@ public class WFCTile : MonoBehaviour
 		collapsed = true;
     }
 
+	int ChooseRandomTile()
+	{
+		//MAKE THE RANDOM HAVE A LITTLE BIAS TOWARDS GRASS AS THE MAP ELSE LOOKS LIKE A LABYRINTH
+		if (possibleTypesWithRot.Contains(new (TileType.Grass, 0)) && possibleTypesWithRot.Count > 1)
+		{
+			if (UnityEngine.Random.Range(0, 10) >= 1)
+			{
+				return possibleTypesWithRot.IndexOf(new(TileType.Grass, 0));
+			}
+			else
+			{
+				possibleTypesWithRot.Remove(new(TileType.Grass, 0));
+			}
+		}
+		return UnityEngine.Random.Range(0, possibleTypesWithRot.Count);
+	}
+
 	//UPDATE SPRITE TO BE THE CURRENT TILETYPE
     void UpdateSprite()
     {
-        for (int i = 0; i < spriteRenderers.Count; i++)
-        {
-            spriteRenderers[i].enabled = i == (int)tileType;
-        }
-        transform.rotation = Quaternion.Euler(0, 0, rotation);
+		//IF ITS A GRASS MAKE IT RANDOM BETWEEN FLOWERS AND GRASS
+		if (tileType == TileType.Grass)
+		{
+			spriteRenderers[UnityEngine.Random.Range(2,4)].enabled = true;
+			spriteRenderers[(int)TileType.None].enabled = false;
+		}
+		//OTHERWISE SET THE CORRECT CORRESPONDING TYPE
+		else
+		{
+			for (int i = 0; i < spriteRenderers.Count; i++)
+			{
+				spriteRenderers[i].enabled = i == (int)tileType;
+			}
+		}
+		transform.rotation = Quaternion.Euler(0, 0, rotation);
     }
 
     public void ResetTile()
@@ -132,7 +159,7 @@ public class WFCTile : MonoBehaviour
 		tilebyte = 0b0000;
     }
 
-    void FindAdjacent()
+    public void FindAdjacent()
     {
 		//NORTH
 		adjacentTiles[0] = manager.GetTileFromLoc(tileLoc + Vector2.up);
@@ -151,52 +178,94 @@ public class WFCTile : MonoBehaviour
 		int possibleByte = 0b0000;
 		//KEEPS TRACK OF WHICH NEIGHBOURS ARE AFFECTING THE TILE
 		int setBits = 0b0000;
+		//CHECK NORTH
 		if (adjacentTiles[0] != null && adjacentTiles[0].collapsed)
 		{
-			possibleByte |= ShiftBitsRight(adjacentTiles[0].tilebyte, 2) & NORTHBIT;
+			possibleByte |= SwapNibblesInByte(adjacentTiles[0].tilebyte) & NORTHBIT;
 			setBits |= NORTHBIT;
 		}
+		//CHECK WEST
 		if (adjacentTiles[1] != null && adjacentTiles[1].collapsed)
 		{
-			possibleByte |= ShiftBitsRight(adjacentTiles[1].tilebyte, 2) & WESTBIT;
+			possibleByte |= ReverseBitOrder(adjacentTiles[1].tilebyte) & WESTBIT;
 			setBits |= WESTBIT;
 		}
+		//CHECK SOUTH
 		if (adjacentTiles[2] != null && adjacentTiles[2].collapsed)
 		{
-			possibleByte |= ShiftBitsRight(adjacentTiles[2].tilebyte, 2) & SOUTHBIT;
+			possibleByte |= SwapNibblesInByte(adjacentTiles[2].tilebyte) & SOUTHBIT;
 			setBits |= SOUTHBIT;
 		}
+		//CHECK EAST
 		if (adjacentTiles[3] != null && adjacentTiles[3].collapsed)
 		{
-			possibleByte |= ShiftBitsRight(adjacentTiles[3].tilebyte, 2) & EASTBIT;
+			possibleByte |= ReverseBitOrder(adjacentTiles[3].tilebyte) & EASTBIT;
 			setBits |= EASTBIT;
 		}
 		foreach (var mapEntry in typeToBitMap)
 		{
-			//ADDED AMOUNT OF 90 ROTATIONS UNTIL IT FITS
+			//GRASS AND DIRT DOESN'T NEED TO BE ROTATED
+			if (mapEntry.Key == TileType.Grass || mapEntry.Key == TileType.Dirt)
+			{
+				TypeWithRotation tileToCheck = new(mapEntry.Key, 0);
+				if (((mapEntry.Value ^ possibleByte) & setBits) == 0 && !possibleTypesWithRot.Contains(tileToCheck))
+				{
+					possibleTypesWithRot.Add(tileToCheck);
+				}
+				else if (((mapEntry.Value ^ possibleByte) & setBits) != 0 && possibleTypesWithRot.Contains(tileToCheck))
+				{
+					possibleTypesWithRot.Remove(tileToCheck);
+				}
+				continue;
+			}
+			//ROTATE 90 DEGREES 4 TIMES TO SEE IF THE TILETYPE CAN FIT
 			for (int i = 0; i < 4; i++)
 			{
 				int rotatedShape = ShiftBitsRight(mapEntry.Value, i);
-				if (((rotatedShape ^ possibleByte) & setBits) == 0)
+				TypeWithRotation tileToCheck = new(mapEntry.Key, i);
+				if (((rotatedShape ^ possibleByte) & setBits) == 0 && !possibleTypesWithRot.Contains(tileToCheck))
 				{
-					possibleTypesWithRot.Add(new TypeWithRotation(mapEntry.Key, i));
+					possibleTypesWithRot.Add(tileToCheck);
+				}
+				else if (((rotatedShape ^ possibleByte) & setBits) != 0 && possibleTypesWithRot.Contains(tileToCheck))
+				{
+					possibleTypesWithRot.Remove(tileToCheck);
 				}
 			}
 		}
 	}
 
-	//
+	//MAKE BYTE GO FROM 0bABCD to 0bDCBA
+	int ReverseBitOrder(int num)
+	{
+		byte reversed = 0;
+		reversed |= (byte)((num & 0x01) << 3);
+		reversed |= (byte)((num & 0x02) << 1);
+		reversed |= (byte)((num & 0x04) >> 1);
+		reversed |= (byte)((num & 0x08) >> 3);
+
+		return reversed;
+	}
+
+	//MAKE BYTE GO FROM 0bABCD TO 0bBADC
+	int SwapNibblesInByte(int num)
+	{
+		//0bABCD -> 0bDCBA
+		int reversedOrder = ReverseBitOrder(num);
+		//0bDCBA -> 0bBADC
+		return ShiftBitsRight(reversedOrder, 2);
+	}
+
+	//SHIFT BITS TO THE RIGHT WITH A WRAP AROUND AT 4 BITS
 	int ShiftBitsRight(int bit, int count)
 	{
-		int x = bit >> count;
-		int y = (bit << (4 - count)) & 0b1111;
 		return (bit >> count) | ((bit << (4 - count)) & 0b1111);
 	}
 
-	//
+	//SHIFT BITS TO THE LEFT WITH A WRAP AROUND AT 4 BITS
 	int ShiftBitsLeft(int bit, int count)
 	{
-		return (bit << count) | (bit >> (4 - count));
+		return (bit << count) | ((bit >> (4 - count)) & 0b1111);
 	}
 
 }

@@ -7,8 +7,6 @@ using UnityEngine.Tilemaps;
 
 public class TileManager : MonoBehaviour
 {
-	//LIST OF TILE POSITIONS
-	// public List<Vector2> tilePosMap = new();
 	//MAP OF TILES AND THEIR LOCATIONS
 	public Dictionary<Vector2, WFCTile> tileMap = new();
 	//TILES PLACED IN THE WORLD
@@ -21,8 +19,6 @@ public class TileManager : MonoBehaviour
 	public Toggle seedToggle;
 	//STEP BY STEP UI TOGGLE
 	public Toggle sbsToggle;
-	//WAVE FUNCTION COLLAPSE SCRIPT
-	// WFC wfc;
 
 	//LIST OF COLLAPSED TILES
 	List<WFCTile> collapsedTiles = new();
@@ -35,16 +31,14 @@ public class TileManager : MonoBehaviour
 	int largestMapSize = 0;
 
 	//SEED USED FOR THE RANDOM NUMBER GENERATOR 
-	int seed = 0;
+	public int seed = 0;
 	//FILEPATH TO SEED LOG
 	string seedLogPath = "Assets/seeds.log";	
 
 	/*--------STEP BY STEP VARIABLES--------*/
 	/*USED IN A FOR LOOP FOR THE STEP BY STEP TO DIRECT	
 	HOW MANY TILES SHOULD BE PLACED PER LOOP*/
-	int tilesPerFrame = 4;
-	//USED DURING STEP BY STEP FOR KNOWING WHICH TILE IT'S AT
-	int tilePosIndex = 0;
+	int tilesPerFrame = 1;
 	//BOOL TO CHECK IF THE STEP BY STEP SHOULD CONTINUE
 	bool fullySpawned = false;
 	//BOOL TO CHECK IF STEP BY STEP SHOULD BE SETUP
@@ -86,8 +80,8 @@ public class TileManager : MonoBehaviour
 	{
 		if (mapSize > largestMapSize)
 		{
-			largestMapSize = mapSize;
 			SpawnTiles();
+			largestMapSize = mapSize;
 		}
 		foreach (WFCTile tile in placedTiles)
 		{
@@ -113,7 +107,6 @@ public class TileManager : MonoBehaviour
 		stepByStep = sbsToggle.isOn;
 		if (stepByStep)
 		{
-			tilePosIndex = 0;
 			fullySpawned = false;
 			StepGenerateMap();
 			return;
@@ -125,12 +118,13 @@ public class TileManager : MonoBehaviour
 	public void GenerateMap()
 	{
 		//FIRST TILE WILL START FROM THE CENTER OF THE MAP
-		placedTiles[mapSize*mapSize/2].CollapseTile();
-		uncollapsedTiles.Remove(placedTiles[mapSize*mapSize/2]);
 		WFCTile tileToCollapse;
 		while (uncollapsedTiles.Count > 0)
 		{
-			tileToCollapse = FindLowestEntropyTile();
+			if (uncollapsedTiles.Count == mapSize * mapSize)
+				tileToCollapse = tileMap[new(mapSize / 2, mapSize / 2)];
+			else
+				tileToCollapse = FindLowestEntropyTile();
 			tileToCollapse.CollapseTile();
 			foreach (var neighbour in tileToCollapse.adjacentTiles)
 			{
@@ -181,7 +175,7 @@ public class TileManager : MonoBehaviour
 		foreach (WFCTile tile in uncollapsedTiles)
 		{
 			entropy = tile.possibleTypesWithRot.Count;
-			if (entropy < lowestEntropy && entropy > 1)
+			if (entropy < lowestEntropy && entropy > 0)
 			{
 				lowestEntropyTile = tile;
 				lowestEntropy = entropy;
@@ -203,6 +197,10 @@ public class TileManager : MonoBehaviour
 				tile.transform.SetParent(tilesParent.transform);
 				tile.SetManager(GetComponent<TileManager>());
 				placedTiles.Add(tile);
+			}
+			if (i % mapSize == largestMapSize || i / mapSize == largestMapSize)
+			{
+				tileMap[new(i % mapSize, i / mapSize)].neigboursFound = false;
 			}
 		}
 	}
