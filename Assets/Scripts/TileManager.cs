@@ -3,7 +3,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using System;
 using System.IO;
-using UnityEngine.Tilemaps;
 
 public class TileManager : MonoBehaviour
 {
@@ -32,13 +31,15 @@ public class TileManager : MonoBehaviour
 
 	//SEED USED FOR THE RANDOM NUMBER GENERATOR 
 	public int seed = 0;
+	//TOTAL AMOUNT OF AVAILABLE SEEDS
+	int maxSeed = 999999;
 	//FILEPATH TO SEED LOG
 	string seedLogPath = "Assets/seeds.log";	
 
 	/*--------STEP BY STEP VARIABLES--------*/
 	/*USED IN A FOR LOOP FOR THE STEP BY STEP TO DIRECT	
 	HOW MANY TILES SHOULD BE PLACED PER LOOP*/
-	int tilesPerFrame = 1;
+	public int tilesPerFrame = 1;
 	//BOOL TO CHECK IF THE STEP BY STEP SHOULD CONTINUE
 	bool fullySpawned = false;
 	//BOOL TO CHECK IF STEP BY STEP SHOULD BE SETUP
@@ -90,7 +91,7 @@ public class TileManager : MonoBehaviour
 
 		if (seedToggle.isOn)
 		{
-			seed = UnityEngine.Random.Range(0, 10000);
+			seed = UnityEngine.Random.Range(0, maxSeed + 1);
 		}
 		UnityEngine.Random.InitState(seed);
 		LogSeed();
@@ -198,7 +199,7 @@ public class TileManager : MonoBehaviour
 				tile.SetManager(GetComponent<TileManager>());
 				placedTiles.Add(tile);
 			}
-			if (i % mapSize == largestMapSize || i / mapSize == largestMapSize)
+			if (i % mapSize == largestMapSize - 1 || i / mapSize == largestMapSize - 1)
 			{
 				tileMap[new(i % mapSize, i / mapSize)].neigboursFound = false;
 			}
@@ -217,7 +218,9 @@ public class TileManager : MonoBehaviour
 	//SAVE SEED TO 'seeds.log' FILE
 	public void LogSeed()
 	{
-		string formattedSeed = seed.ToString("D4");
+		//FETCH HOW MANY NUMBERS ARE IN THE SEED POOL FOR FORMATTING THE STRING IN THE LOG
+		string seedLength = "D" + maxSeed.ToString().Length.ToString();
+		string formattedSeed = seed.ToString(seedLength);
 		DateTime now = DateTime.Now;
 		string timeStamp = now.ToString("yyyy-MM-dd HH:mm:ss");
 		string logEntry = $"{timeStamp}: {formattedSeed}";

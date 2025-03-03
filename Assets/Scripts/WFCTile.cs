@@ -1,11 +1,5 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.IO.Compression;
-using System.Linq;
-using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.Animations;
 
 public enum TileType
 {
@@ -40,17 +34,15 @@ public class WFCTile : MonoBehaviour
 	/*-----------------------------*/
 
 	//THIS TILE'S TYPE
-    public TileType tileType;
+    TileType tileType;
 	//LIST OF ALL SPRITES
     public List<SpriteRenderer> spriteRenderers;
-	//LIST OF THIS TILE'S POSSIBLE TYPES
-    public List<TileType> possibleTileTypes = new();
 	//THE ADJACENT TILES TO THIS TILE 0: NORTH, 1: WEST, 2: SOUTH, 3: EAST
     public WFCTile[] adjacentTiles = new WFCTile[4];
 	//THIS TILE'S ROTATION
     public TileManager manager;
 	//THIS TILE'S ROTATION
-    public Vector2 tileLoc;
+    Vector2 tileLoc;
 
 	//ASSIGNING BITS TO CORRESPOND TILE TYPE
 	Dictionary<TileType, int> typeToBitMap = new Dictionary<TileType, int>
@@ -68,7 +60,7 @@ public class WFCTile : MonoBehaviour
     public int rotation = 0;
 
 	//BYTE FOR TILE USED FOR BIT-WISE COMPARISON
-	public int tilebyte = 0b0000;
+	int tilebyte = 0b0000;
 	public bool collapsed = false;
 	public bool neigboursFound = false;
 
@@ -106,7 +98,7 @@ public class WFCTile : MonoBehaviour
 		//MAKE THE RANDOM HAVE A LITTLE BIAS TOWARDS GRASS AS THE MAP ELSE LOOKS LIKE A LABYRINTH
 		if (possibleTypesWithRot.Contains(new (TileType.Grass, 0)) && possibleTypesWithRot.Count > 1)
 		{
-			if (UnityEngine.Random.Range(0, 10) >= 1)
+			if (UnityEngine.Random.Range(0, 10) >= 2)
 			{
 				return possibleTypesWithRot.IndexOf(new(TileType.Grass, 0));
 			}
@@ -140,13 +132,7 @@ public class WFCTile : MonoBehaviour
 
     public void ResetTile()
     {
-        possibleTileTypes.Clear();
 		tileType = TileType.None;
-        for (int i = 0; i < (int)TileType.None; i++)
-        {
-            possibleTileTypes.Add((TileType)i);
-        }
-
         for (int i = 0; i < spriteRenderers.Count; i++)
         {
             spriteRenderers[i].enabled = i == (int)TileType.None;

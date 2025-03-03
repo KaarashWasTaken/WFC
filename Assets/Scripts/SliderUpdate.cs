@@ -1,9 +1,5 @@
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using TMPro.EditorUtilities;
 using Unity.VisualScripting;
-using UnityEditor.UI;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,9 +7,9 @@ public class SliderUpdate : MonoBehaviour
 {
 	//GENERATE BUTTON
 	public GenerateButton genButton;
-	//MAP DIMENTION INPUT FIELD
+	//MAP DIMENSION INPUT FIELD
 	public TMP_InputField inputField;
-	//TEXT FOR STEP BY STEP DELAY TIME
+	//TEXT FOR STEP BY STEP SLIDERS
 	public TextMeshProUGUI sbsText;
 	//TILEMANAGER EXISTING IN SCENE
 	public TileManager manager;
@@ -70,5 +66,12 @@ public class SliderUpdate : MonoBehaviour
 	{
 		manager.sbsStepTime = GetComponentInChildren<Slider>().value;
 		sbsText.SetText(manager.sbsStepTime.ToString("F2"));
+	}
+
+	//UPDATE AMOUNT OF STEPS PER UPDATE
+	public void UpdateSBSSteps()
+	{
+		manager.tilesPerFrame = (int)GetComponentInChildren<Slider>().value;
+		sbsText.SetText(manager.tilesPerFrame.ToString());
 	}
 }
