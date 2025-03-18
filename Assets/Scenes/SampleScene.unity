@@ -155,6 +155,10 @@ PrefabInstance:
       propertyPath: manager
       value: 
       objectReference: {fileID: 1139642695}
+    - target: {fileID: 1505193717877498388, guid: f8f461ab8b3de1d4d8472553f9a20973, type: 3}
+      propertyPath: manager
+      value: 
+      objectReference: {fileID: 1139642695}
     - target: {fileID: 3991198437638728821, guid: f8f461ab8b3de1d4d8472553f9a20973, type: 3}
       propertyPath: m_AnchorMax.x
       value: 0
